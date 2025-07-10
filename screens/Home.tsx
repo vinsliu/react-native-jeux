@@ -1,6 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
 import {
-  Button,
   StatusBar,
   StyleSheet,
   Text,
@@ -9,13 +8,16 @@ import {
 } from "react-native";
 
 export default function Home() {
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
 
   return (
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" />
+      <Text style={styles.title}>Welcome</Text>
+      <Text style={styles.subtitle}>Ready to test your intuition ?</Text>
       <TouchableHighlight
         onPress={() => navigation.navigate("Game")}
+        activeOpacity={0.8}
         style={styles.button}
       >
         <Text style={styles.buttonText}>Start game!</Text>
@@ -27,21 +29,39 @@ export default function Home() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#f9f9fb",
     alignItems: "center",
     justifyContent: "center",
+    padding: 20,
+  },
+  title: {
+    fontSize: 40,
+    fontWeight: "700",
+    color: "#333",
+    marginBottom: 10,
+  },
+  subtitle: {
+    fontSize: 18,
+    color: "#666",
+    marginBottom: 40,
   },
   button: {
-    width: 300,
-    height: 300,
+    width: 200,
+    height: 100,
+    borderRadius: 100,
+    backgroundColor: "#6A0DAD",
     display: "flex",
     alignItems: "center",
-    justifyContent: "space-around",
-    borderRadius: 150,
-    backgroundColor: "purple",
+    justifyContent: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.2,
+    shadowRadius: 10,
+    elevation: 10,
   },
   buttonText: {
-    color: "white",
-    fontSize: 48,
+    color: "#fff",
+    fontSize: 24,
+    fontWeight: "600",
   },
 });

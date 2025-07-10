@@ -1,52 +1,42 @@
 import { useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
-import {
-  Alert,
-  Button,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TouchableHighlight,
-  View,
-} from "react-native";
+import { Alert, StatusBar, StyleSheet, Text, View } from "react-native";
+import AnimatedButton from "../components/AnimatedButton";
 
 export default function Game() {
   const [choice, setChoice] = useState("");
-
-  const baseNumber = Math.floor(Math.random() * 100);
-  const score = Math.floor(Math.random() * 100);
-
-  console.log(`Beginning base Number = ${baseNumber} et score = ${score}`);
-
-  const navigation = useNavigation();
+  const [baseNumber] = useState(() => Math.floor(Math.random() * 100));
+  const [score] = useState(() => Math.floor(Math.random() * 100));
+  const navigation = useNavigation<any>();
 
   useEffect(() => {
     if (choice) {
-      console.log(`Base Number = ${baseNumber} et Score = ${score}`);
+      console.log(
+        `In useEffect base Number = ${baseNumber} et Score = ${score}`
+      );
       const winner =
         (choice === "higher" && score > baseNumber) ||
         (choice === "lower" && baseNumber > score);
-      Alert.alert(`You've ${winner ? "won" : "lost"}`, `You scored: ${score}`);
-      navigation.goBack();
+
+      navigation.navigate("Result", {
+        baseNumber,
+        score,
+        choice,
+        winner,
+      });
     }
-  }, [baseNumber, score, choice]);
+  }, [choice]);
 
   return (
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" />
-      <Text style={styles.baseNumber}>Starting: {baseNumber}</Text>
-      <TouchableHighlight
-        onPress={() => setChoice("higher")}
-        style={[styles.button, styles.buttonGreen]}
-      >
-        <Text style={styles.buttonText}>Higher</Text>
-      </TouchableHighlight>
-      <TouchableHighlight
-        onPress={() => setChoice("lower")}
-        style={[styles.button, styles.buttonRed]}
-      >
-        <Text style={styles.buttonText}>Lower</Text>
-      </TouchableHighlight>
+      <Text style={styles.title}>Guess the number</Text>
+      <Text style={styles.baseNumber}>{baseNumber}</Text>
+
+      <View style={styles.buttonGroup}>
+        <AnimatedButton action="higher" onPress={() => setChoice("higher")} />
+        <AnimatedButton action="lower" onPress={() => setChoice("lower")} />
+      </View>
     </View>
   );
 }
@@ -54,30 +44,26 @@ export default function Game() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#f4f4F8",
     alignItems: "center",
     justifyContent: "center",
+    padding: 20,
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: "600",
+    color: "#333",
+    marginBottom: 10,
   },
   baseNumber: {
-    fontSize: 48,
-    marginBottom: 30,
+    fontSize: 64,
+    fontWeight: "700",
+    color: "#6A0DAD",
+    marginBottom: 40,
   },
-  button: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-around",
-    borderRadius: 15,
-    padding: 30,
-    marginVertical: 15,
-  },
-  buttonRed: {
-    backgroundColor: "red",
-  },
-  buttonGreen: {
-    backgroundColor: "green",
-  },
-  buttonText: {
-    color: "white",
-    fontSize: 24,
+  buttonGroup: {
+    width: "100%",
+    paddingHorizontal: 20,
+    justifyContent: "center",
   },
 });
