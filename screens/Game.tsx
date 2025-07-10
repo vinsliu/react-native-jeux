@@ -11,9 +11,6 @@ export default function Game() {
 
   useEffect(() => {
     if (choice) {
-      console.log(
-        `In useEffect base Number = ${baseNumber} et Score = ${score}`
-      );
       const winner =
         (choice === "higher" && score > baseNumber) ||
         (choice === "lower" && baseNumber > score);
